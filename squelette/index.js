@@ -1,30 +1,28 @@
+const http = require('http');
 
-const EventEmitter = require('events');
-const emitter = new EventEmitter();
+const server = http.createServer((req, res) => {
 
-emitter.on('fizzBuzz',function(args) {
-
-    var chaine ="";
-
-    if(args%3==0){
-        chaine=chaine+"Fizz";
+  let start = performance.now();
+  try {
+    console.log(req.httpVersion, req.url, req.method);
+    
+    if (req.url === "/") {
+      res.writeHead(200, {'content-type':'text/html'});
+      res.write('<h1>HELLO WORLD PaulC</h1>');
+    } else {
+      res.writeHead(404, {'content-type':'text/html'});
+      res.write('<h1>404 Page Introuvable </h1>');
     }
+  } catch (err) {
+    res.writeHead(500, {'content-type':'text/html'});
+    res.write('<h1>500 Erreur Interne au Serveur</h1>');
+  }
+ 
+  res.end()
 
-    if(args%5==0){
-        chaine=chaine+"Buzz";
-    }
+  let end = performance.now();
+  console.log("requête a pris", end - start);
+})
 
-    if(chaine==""){
-        console.log(args);
-    }
-
-    else{
-        console.log(chaine);
-    }
-
-});
-
-emitter.emit("fizzBuzz", 20);
-emitter.emit("fizzBuzz", 6);
-emitter.emit("fizzBuzz",10);
-emitter.emit("fizzBuzz",18);
+server.listen(5000);
+console.log('Mon serveur écoute sur le port 5000');
