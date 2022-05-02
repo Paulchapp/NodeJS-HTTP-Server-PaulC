@@ -21,7 +21,7 @@ const server = http.createServer((req, res) => {
   res.end()
 
   let end = performance.now();
-  console.log("requête a pris", end - start);
+  console.log("la requête a mis", end - start);
 })
 
 server.listen(5000);
